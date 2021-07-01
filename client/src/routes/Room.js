@@ -132,6 +132,7 @@ import React, { useRef, useEffect ,useState } from "react";
 import send from "send";
 import io from "socket.io-client";
 import styled from "styled-components";
+import CallPageFooter from "../components/UI/CallPageFooter/CallPageFooter";
 
 const Container = styled.div`
     height: 100vh;
@@ -370,6 +371,12 @@ const Room = (props) => {
     function stopScreenShare () {
 
     }
+    // const disconnectCall = () => {
+    //     peer.destroy();
+    //     history.push("/");
+    //     window.location.reload();
+    //   };
+    
     function renderMessage(message, index) {
         if (message.yours) {
             return (
@@ -389,18 +396,35 @@ const Room = (props) => {
             </PartnerRow>
         )
     }
+    const [value, setValue] = useState("");
 
+    const handleChnge = e => {
+        setValue(e.target.value);
+      };
+    
     return (
         <div>
             <video controls style={{height: 500, width: 500}} autoPlay ref={userVideo} />
             <video controls style={{height: 500, width: 500}} autoPlay ref={partnerVideo} />
-            <button onClick={shareScreen}>Start Share screen</button>
-            <button onClick={stopScreenShare}>Stop Screen Share</button>
+            <CallPageFooter stopScreenShare={stopScreenShare} screenShare={shareScreen}  />
+            {/* <button onClick={shareScreen}>Start Share screen</button> */}
+            {/* <button onClick={stopScreenShare}>Stop Screen Share</button> */}
             <Messages>
                 {messages.map(renderMessage)}
             </Messages>
             <MessageBox value={text} onChange={handleChange} placeholder="Say something....." />
-            <Button onClick={sendMessage}>Send..</Button>
+            {/* <Button  onClick={sendMessage}>Send..</Button> */}
+            
+        <input
+          value={value}
+          onChange={handleChnge}
+        />
+        <button
+          onClick={sendMessage}
+          type="submit"
+        >
+          Send..
+        </button>
         {/* <button id="startButton">{Start}</button>
         <button id="callButton">{Call}</button>
         <button id="hangupButton">{HangUp}</button> */}

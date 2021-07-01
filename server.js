@@ -91,4 +91,4 @@ if (process.env.PROD) {
 
 
 const port = process.env.PORT || 8000;
-server.listen(port, () => console.log('server is running on port 8000'));
+server.listen(port, 8000 => console.log('server is running on port 8000'));
