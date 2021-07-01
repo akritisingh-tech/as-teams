@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { v1 as uuid } from "uuid";
 
 // const CreateRoom = (props) => {
@@ -13,7 +13,7 @@ import { v1 as uuid } from "uuid";
 
 // export default CreateRoom;
 
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faKeyboard } from "@fortawesome/free-solid-svg-icons";
 // import shortid from "shortid";
@@ -34,6 +34,14 @@ const CreateRoom = (props) => {
         const id = uuid();
         props.history.push(`/room/${id}`);
     }
+    const [name, setName] = useState(" ");
+    const handleInput = event => {
+        setName(event.target.value);
+      };
+    
+      const logValue = () => {
+        window.open(name);
+      };
 
     return (
         <div className="home-page">
@@ -51,9 +59,9 @@ const CreateRoom = (props) => {
                             <div className="join-meeting">
                                 <div className="input-section">
                                     <FontAwesomeIcon className="icon" icon={faKeyboard} />
-                                    <input placeholder="Enter a Code or Link"></input>
+                                    <input placeholder="Enter a Code or Link" onChange={handleInput} />
                                 </div>
-                                <button className="btn no-bg">Join</button>
+                                <button className="btn no-bg" onClick={logValue}>Join</button>
                             </div>
                         </div>
                     </div>
