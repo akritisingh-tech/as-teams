@@ -1,0 +1,36 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+
+    .logo {
+        display: flex;
+        align-items: center;
+        width: 140px;
+        font-weight: 500;
+
+        img {
+            width: 50%;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            padding-left: 4px;
+            // color: #5f6368;
+        }
+    }
+
+    .right-panel {
+        display: flex;
+        align-items: center;
+
+        .icon-block {
+            font-size: 25px;
+            padding: 10px;
+            color: #5f6368;
+        }
+    }
+}
