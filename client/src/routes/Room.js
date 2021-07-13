@@ -1,138 +1,8 @@
-// import React, { useRef, useEffect } from "react";
-// import io from "socket.io-client";
-
-// const Room = (props) => {
-//     const userVideo = useRef();
-//     const partnerVideo = useRef();
-//     const peerRef = useRef();
-//     const socketRef = useRef();
-//     const otherUser = useRef();
-//     const userStream = useRef();
-    
-//     useEffect(() => {
-//         navigator.mediaDevices.getUserMedia({ audio:true, video:true }).then(stream => {  // then we get this stream object that's actually includes both the audio and video.
-//             userVideo.current.srcObject = stream;
-//             userStream.current = stream; 
-            
-//             socketRef.current = io.connect("/");   //connect to socket.io server.
-//             socketRef.current.emit("join room", props.match.params.roomID);   // grab the room id from URL and then send to server, and server put us in a specific room
-
-//             socketRef.current.on("other user", userID => {   // when A is in room and b is joinig then this other user event will fire up for B
-//                 callUser(userID);                            // userID=userID of A, when B will join server will give him the userId of A.                   
-//                 otherUser.current = userID;        //use it later
-//             });
-
-//             socketRef.current.on("user joined", userID => {    // when A is in room and b is joinig then this other user event will fire up for A.(the one in room will get notified about the person that'joined through the "user joined " event)
-//                 otherUser.current =  userID;       
-//             });
-
-//             socketRef.current.on("offer", handleRecieveCall);  // when we'r receiving an offer so then call the handlereceivecall function 
-//             socketRef.current.on("answer", handleAnswer);      // when we'r sending an answer 
-//             socketRef.current.on("ice-candidate", handleNewICECandidateMsg);
-
-//         });
-
-//     }, []); 
-    
-//     function callUser(userID) {
-//         peerRef.current = createPeer(userID);
-//         userStream.current.getTracks().forEach(track => peerRef.current.addTrack(track, userStream.current));
-//     };
-
-//     function createPeer(userID) {
-//         const peer = new RTCPeerConnection({
-//             iceServers: [
-//                 {
-//                     urls: "stun:stun.stunprotocol.org"
-//                 },
-//                 {
-//                     urls: "turn:numb.viagenie.ca",
-//                     credential: 'muazkh',
-//                     username: 'webrtc@live.com'
-//                 },
-//             ]
-//         });
-
-//         peer.onicecandidate = handleICECandidateEvent;
-//         peer.ontrack = handleTrackEvent;
-//         peer.onnegotiationneeded = () => handleNegotiationNeededEvent(userID);  //when 1st person negotiate the call
-
-//         return peer;
-//     }
-
-//     function handleNegotiationNeededEvent(userID) {
-//         peerRef.current.createOffer().then(offer => {
-//             return peerRef.current.setLocalDescription(offer);  //whatever offer you'r receiving from somebody else set as your remote description
-//         }).then(() => {                                        //whatever offer/answer you'r creating yourself  set as your local description
-//             const payload = {
-//                 target: userID, //target of a person we are trying to send the offer to 
-//                 caller: socketRef.current.id, //send our own ID 
-//                 sdp: peerRef.current.localDescription //actual offer data 
-//             }; 
-//             socketRef.current.emit("offer", payload); 
-//         }).catch( e => console.log(e));
-//     }
-
-//     function handleRecieveCall(incoming) {
-//         peerRef.current = createPeer();
-//         const desc = new RTCSessionDescription(incoming.sdp);
-//         peerRef.current.setRemoteDescription(desc).then(() => {
-//             userStream.current.getTracks().forEach(track => peerRef.current.addTrack(track, userStream.current));
-//         }).then(() => {
-//             return peerRef.current.createAnswer();
-//         }).then(answer => {
-//             return peerRef.current.setLocalDescription(answer);
-//         }).then(() => {
-//             const payload = {
-//                 target: incoming.caller,
-//                 caller: socketRef.current.id,
-//                 sdp: peerRef.current.localDescription
-//             }
-//             socketRef.current.emit("answer", payload);
-//         })
-//     };
-
-//     function handleAnswer(message) {
-//         const desc = new RTCSessionDescription(message.sdp);
-//         peerRef.current.setRemoteDescription(desc).catch(e => console.log(e));
-//     };
-
-//     function handleICECandidateEvent(e) {
-//         if (e.candidate) {
-//             const payload = {
-//                 target: otherUser.current,
-//                 candidate: e.candidate,
-//             }
-//             socketRef.current.emit("ice-candidate", payload);
-//         }
-//     };
-
-//     function handleNewICECandidateMsg(incoming) {
-//         const candidate = new RTCIceCandidate(incoming);
-
-//         peerRef.current.addIceCandidate(candidate)
-//             .catch(e => console.log(e));
-//     }
-
-//     function handleTrackEvent(e) {
-//         partnerVideo.current.srcObject = e.streams[0];
-//     }; 
-
-//     return (
-//         <div>
-//             <video autoPlay ref={userVideo} />
-//             <video autoPlay ref={partnerVideo} />
-//         </div>
-//     )
-// };
-
-// export default Room;
-
 import React, { useRef, useEffect ,useState } from "react";
 import send from "send";
 import io from "socket.io-client";
 import styled from "styled-components";
-import CallPageFooter from "../components/UI/CallPageFooter/CallPageFooter";
+// import CallPageFooter from "../components/UI/CallPageFooter/CallPageFooter";
 
 const Container = styled.div`
     height: 100vh;
@@ -202,14 +72,7 @@ const PartnerMessage = styled.div`
   border-bottom-left-radius: 10%;
 `;
 
-// const startButton = document.getElementById('startButton');
-// const callButton = document.getElementById('callButton');
-// const hangupButton = document.getElementById('hangupButton');
-// callButton.disabled = true;
-// hangupButton.disabled = true;
-// startButton.addEventListener('click', start);
-// callButton.addEventListener('click', call);
-// hangupButton.addEventListener('click', hangup);
+
 
 const Room = (props) => {
     const userVideo = useRef();
@@ -304,7 +167,7 @@ const Room = (props) => {
         const desc = new RTCSessionDescription(incoming.sdp);
         peerRef.current.setRemoteDescription(desc).then(() => {
             userStream.current.getTracks().forEach(track => senders.current.push(peerRef.current.addTrack(track, userStream.current)));
-            // userStream.current.getTracks().forEach(track => peerRef.current.addTrack(track, userStream.current));
+            
         }).then(() => {
             return peerRef.current.createAnswer();
         }).then(answer => {
@@ -367,16 +230,6 @@ const Room = (props) => {
             }
         })
     }
-
-    function stopScreenShare () {
-
-    }
-    // const disconnectCall = () => {
-    //     peer.destroy();
-    //     history.push("/");
-    //     window.location.reload();
-    //   };
-    
     function renderMessage(message, index) {
         if (message.yours) {
             return (
@@ -404,10 +257,9 @@ const Room = (props) => {
     
     return (
         <div>
-            <video controls style={{height: 500, width: 500}} autoPlay ref={userVideo} />
-            <video controls style={{height: 500, width: 500}} autoPlay ref={partnerVideo} />
-            <CallPageFooter stopScreenShare={stopScreenShare} screenShare={shareScreen}  />
-            {/* <button onClick={shareScreen}>Start Share screen</button> */}
+            <video controls style={{height: 500, width: 500}} autoPlay muted  ref={userVideo} />
+            <video controls style={{height: 500, width: 500}} autoPlay muted  ref={partnerVideo} />
+            <button onClick={shareScreen}>Start Share screen</button>
             {/* <button onClick={stopScreenShare}>Stop Screen Share</button> */}
             <Messages>
                 {messages.map(renderMessage)}

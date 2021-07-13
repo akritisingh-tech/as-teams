@@ -1,24 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { v1 as uuid } from "uuid";
 
-// const CreateRoom = (props) => {
-//     function create() {
-//         const id = uuid();
-//         props.history.push(`/room/${id}`);
-//     }
-//     return (
-//         <button onClick={create}> Create Room</button>
-//     );
-// }
-
-// export default CreateRoom;
 
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faKeyboard } from "@fortawesome/free-solid-svg-icons";
-// import shortid from "shortid";
-import Header from "../components/UI/Header/Header";
-// import Header from "./../UI/Header/Header";
 import "./HomePage.scss";
 
 // const HomePage = () => {
@@ -45,11 +31,11 @@ const CreateRoom = (props) => {
 
     return (
         <div className="home-page">
-            <Header />
+            {/* <Header /> */}
             <div className="body">
                 <div className="left-side">
                     <div className="content">
-                        <h1>Microsoft Teams</h1>
+                        <h1>AS Teams</h1>
                         <h3>Meet, chat, call, and collaborate in just one place.</h3>
                         <div className="meeting-btn">
                             <button className="btn blue" onClick={create}>
@@ -64,9 +50,6 @@ const CreateRoom = (props) => {
                                 <button className="btn no-bg" onClick={logValue}>Join</button>
                             </div>
                         </div>
-                    </div>
-                    <div className="pricing">
-                        <a href="">See plans and pricing</a>
                     </div>
                 </div>
                 <div className="right-side">
