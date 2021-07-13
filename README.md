@@ -1,6 +1,6 @@
 # as-teams
 
-*A real-time Audio, Video Communication System along with the text and sharing feature*.
+[x]A real-time Audio, Video Communication System along with the text and sharing feature
 
 #Backend
 npm i
